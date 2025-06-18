@@ -1,0 +1,206 @@
+import React, { useState, useCallback } from 'react';
+import { Upload, FileText, AlertCircle, CheckCircle, Zap, Brain, TrendingUp } from 'lucide-react';
+
+interface UploadSectionProps {
+  onFileUpload: (file: File) => void;
+  selectedModel: string;
+  onModelChange: (model: string) => void;
+}
+
+const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedModel, onModelChange }) => {
+  const [dragOver, setDragOver] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const models = [
+    { id: 'SVR', name: 'Support Vector Regression', icon: Brain, accuracy: '94%', speed: 'Fast' },
+    { id: 'LSTM', name: 'Long Short-Term Memory', icon: TrendingUp, accuracy: '96%', speed: 'Medium' },
+    { id: 'Ensemble', name: 'Ensemble Model', icon: Zap, accuracy: '97%', speed: 'Slow' }
+  ];
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+        setSelectedFile(file);
+      }
+    }
+  }, []);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUpload = () => {
+    if (selectedFile) {
+      setIsProcessing(true);
+      setTimeout(() => {
+        onFileUpload(selectedFile);
+        setIsProcessing(false);
+      }, 100);
+    }
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold text-slate-900 mb-4">Upload Battery Dataset</h2>
+        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          Upload your battery cycle data and select a machine learning model for SoH prediction analysis
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* File Upload Section */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+          <h3 className="text-2xl font-semibold text-slate-900 mb-6">Dataset Upload</h3>
+          
+          <div
+            className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
+              dragOver 
+                ? 'border-blue-500 bg-blue-50' 
+                : selectedFile
+                ? 'border-green-500 bg-green-50'
+                : 'border-slate-300 hover:border-slate-400'
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            {selectedFile ? (
+              <div className="space-y-4">
+                <CheckCircle className="h-12 w-12 text-green-500 mx-auto" />
+                <div>
+                  <p className="font-semibold text-slate-900">{selectedFile.name}</p>
+                  <p className="text-sm text-slate-500">
+                    {Math.round(selectedFile.size / 1024)} KB • CSV format
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <Upload className="h-12 w-12 text-slate-400 mx-auto" />
+                <div>
+                  <p className="text-lg font-medium text-slate-900">
+                    Drop your CSV file here
+                  </p>
+                  <p className="text-slate-500">or click to browse</p>
+                </div>
+              </div>
+            )}
+            
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleFileSelect}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </div>
+
+          {/* File Requirements */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex items-start space-x-3">
+              <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-blue-900">File Requirements</h4>
+                <ul className="text-sm text-blue-700 mt-1 space-y-1">
+                  <li>• CSV format with cycle data</li>
+                  <li>• Columns: cycle_number, voltage, current, temperature</li>
+                  <li>• Maximum file size: 50MB</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Model Selection */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+          <h3 className="text-2xl font-semibold text-slate-900 mb-6">Select ML Model</h3>
+          
+          <div className="space-y-4">
+            {models.map((model) => {
+              const IconComponent = model.icon;
+              return (
+                <div
+                  key={model.id}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                    selectedModel === model.id
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}
+                  onClick={() => onModelChange(model.id)}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className={`p-2 rounded-lg ${
+                      selectedModel === model.id ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600'
+                    }`}>
+                      <IconComponent className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-slate-900">{model.name}</h4>
+                      <div className="flex items-center space-x-4 mt-1">
+                        <span className="text-sm text-slate-500">Accuracy: {model.accuracy}</span>
+                        <span className="text-sm text-slate-500">Speed: {model.speed}</span>
+                      </div>
+                    </div>
+                    <div className={`w-4 h-4 rounded-full border-2 ${
+                      selectedModel === model.id
+                        ? 'border-blue-500 bg-blue-500'
+                        : 'border-slate-300'
+                    }`}>
+                      {selectedModel === model.id && (
+                        <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Action Button */}
+          <button
+            onClick={handleUpload}
+            disabled={!selectedFile || isProcessing}
+            className={`w-full mt-8 py-4 px-6 rounded-xl font-semibold transition-all duration-200 ${
+              !selectedFile || isProcessing
+                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+            }`}
+          >
+            {isProcessing ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Processing...</span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center space-x-2">
+                <Zap className="h-5 w-5" />
+                <span>Predict SoH</span>
+              </div>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UploadSection;
