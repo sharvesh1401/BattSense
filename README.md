@@ -46,11 +46,3 @@ Other models can also be tested and compared in the future for improved accuracy
 - **R² Score** (to be added)
 - **MAE** (Mean Absolute Error - recommended addition)
 
----
-
-## 📈 Results Snapshot
-
-```text
-Train Score (R²): 0.96
-Test Score (R²): 0.91
-RMSE: 0.038
