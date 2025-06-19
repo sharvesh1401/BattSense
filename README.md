@@ -8,7 +8,7 @@ BattSense
 
 ## 🚀 Project Objective
 
-To build an intelligent model that can **predict battery health (SOH)** using data-driven techniques. The goal is to understand and forecast battery degradation over time using regression algorithms.
+To build an intelligent model that can **predict battery health (SOH)** using data-driven techniques. The goal is to understand and predict battery degradation over time using regression algorithms.
 
 ---
 
