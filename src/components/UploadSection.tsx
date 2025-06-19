@@ -48,6 +48,10 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
     }
   };
 
+  const handleModelSelect = (modelId: string) => {
+    onModelChange(modelId);
+  };
+
   const handleUpload = () => {
     if (selectedFile) {
       setIsProcessing(true);
@@ -73,7 +77,7 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
           <h3 className="text-2xl font-semibold text-slate-900 mb-6">Dataset Upload</h3>
           
           <div
-            className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
+            className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
               dragOver 
                 ? 'border-blue-500 bg-blue-50' 
                 : selectedFile
@@ -137,19 +141,21 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
           <div className="space-y-4">
             {models.map((model) => {
               const IconComponent = model.icon;
+              const isSelected = selectedModel === model.id;
+              
               return (
                 <div
                   key={model.id}
-                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-                    selectedModel === model.id
-                      ? 'border-blue-500 bg-blue-50'
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                    isSelected
+                      ? 'border-blue-500 bg-blue-50 shadow-lg'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
-                  onClick={() => onModelChange(model.id)}
+                  onClick={() => handleModelSelect(model.id)}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`p-2 rounded-lg ${
-                      selectedModel === model.id ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600'
+                    <div className={`p-2 rounded-lg transition-colors ${
+                      isSelected ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600'
                     }`}>
                       <IconComponent className="h-5 w-5" />
                     </div>
@@ -160,19 +166,32 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
                         <span className="text-sm text-slate-500">Speed: {model.speed}</span>
                       </div>
                     </div>
-                    <div className={`w-4 h-4 rounded-full border-2 ${
-                      selectedModel === model.id
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      isSelected
                         ? 'border-blue-500 bg-blue-500'
                         : 'border-slate-300'
                     }`}>
-                      {selectedModel === model.id && (
-                        <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                      {isSelected && (
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
                       )}
                     </div>
                   </div>
                 </div>
               );
             })}
+          </div>
+
+          {/* Selected Model Info */}
+          <div className="mt-6 p-4 bg-slate-50 rounded-lg">
+            <h4 className="font-medium text-slate-900 mb-2">Selected Model</h4>
+            <p className="text-sm text-slate-600">
+              {models.find(m => m.id === selectedModel)?.name || 'No model selected'}
+            </p>
+            <p className="text-xs text-slate-500 mt-1">
+              {selectedModel === 'SVR' && 'Fast training with good performance on small datasets'}
+              {selectedModel === 'LSTM' && 'Deep learning model excellent for time series data'}
+              {selectedModel === 'Ensemble' && 'Combines multiple models for highest accuracy'}
+            </p>
           </div>
 
           {/* Action Button */}
