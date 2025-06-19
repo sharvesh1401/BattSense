@@ -43,7 +43,7 @@ function App() {
               <div className="p-2 bg-blue-600 rounded-lg">
                 <Battery className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-xl font-bold text-slate-900">EV Battery SoH Predictor</h1>
+              <h1 className="text-xl font-bold text-slate-900">BattSense</h1>
             </div>
             
             <nav className="flex items-center space-x-1">

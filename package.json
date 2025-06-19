@@ -1,8 +1,9 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "battsense",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Advanced machine learning analytics for lithium-ion battery State of Health (SoH) prediction",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
