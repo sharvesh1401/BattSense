@@ -38,7 +38,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             {/* CTA Button */}
             <button
               onClick={onGetStarted}
-              className="group bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center mx-auto"
+              className="group bg-pear hover:bg-pear/90 text-gray-800 font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center mx-auto"
             >
               <Upload className="h-5 w-5 mr-2 group-hover:animate-bounce" />
               Upload Battery Dataset

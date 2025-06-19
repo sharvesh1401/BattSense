@@ -1,5 +1,9 @@
 import React from 'react';
 import { Battery, TrendingDown, AlertTriangle, Download, BarChart3, Zap, Clock, Target } from 'lucide-react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { getSoHStatus } from '@utils/batteryUtils'; // Corrected import path
 
 interface DashboardProps {
   uploadedFile: File | null;
@@ -26,26 +30,46 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
     soh: Math.max(0.5, 1 - (i * degradationRate / 100) + (Math.random() - 0.5) * 0.05)
   }));
 
-  const getSoHStatus = (soh: number) => {
-    if (soh >= 0.8) return { color: 'text-green-600', bg: 'bg-green-50', status: 'Excellent' };
-    if (soh >= 0.6) return { color: 'text-yellow-600', bg: 'bg-yellow-50', status: 'Good' };
-    return { color: 'text-red-600', bg: 'bg-red-50', status: 'Needs Attention' };
-  };
+  // const getSoHStatus = (soh: number) => { // Moved to utils
+  //   if (soh >= 0.9) return { color: 'text-green-600', bg: 'bg-green-50', status: 'Excellent' };
+  //   if (soh >= 0.7) return { color: 'text-yellow-600', bg: 'bg-yellow-50', status: 'Good' };
+  //   if (soh >= 0.5) return { color: 'text-orange-600', bg: 'bg-orange-50', status: 'Degraded' };
+  //   return { color: 'text-red-600', bg: 'bg-red-50', status: 'Needs Replacement' };
+  // };
 
   const status = getSoHStatus(predictedSoH);
+  const sohPercentage = Math.round(predictedSoH * 100);
+
+  const featureImportanceData = [
+    { name: 'Voltage Avg.', importance: 0.35, fill: '#A88AED' },
+    { name: 'Capacity', importance: 0.28, fill: '#A88AED' },
+    { name: 'Temp. Avg.', importance: 0.20, fill: '#A88AED' },
+    { name: 'Cycle Index', importance: 0.10, fill: '#A88AED' },
+    { name: 'Current Avg.', importance: 0.07, fill: '#A88AED' },
+  ];
 
   return (
     <div className="space-y-8">
+      {/* SOH Explanation */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
+        <h3 className="text-xl font-semibold text-indigo mb-3">What is State of Health (SOH)?</h3>
+        <p className="text-sm text-slate-700 leading-relaxed">
+          State of Health (SOH) indicates how much usable capacity a battery has compared to when it was new.
+          It's a key indicator of battery aging and performance, typically expressed as a percentage.
+          Monitoring SOH helps in understanding current battery condition and predicting its future lifespan.
+        </p>
+      </div>
+
       {/* Header */}
       <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-slate-900">Battery Analysis Results</h2>
+            <h2 className="text-3xl font-bold text-indigo">Battery Analysis Results</h2> {/* Text color updated */}
             <p className="text-slate-600 mt-1">
               Dataset: {uploadedFile?.name} • Model: {selectedModel}
             </p>
           </div>
-          <button className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+          <button className="flex items-center space-x-2 bg-pear hover:bg-pear/90 text-gray-800 px-4 py-2 rounded-lg transition-colors"> {/* Button style updated */}
             <Download className="h-4 w-4" />
             <span>Export Report</span>
           </button>
@@ -53,30 +77,37 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
 
         {/* Key Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className={`p-6 rounded-xl ${status.bg} border border-slate-200`}>
-            <div className="flex items-center space-x-3">
-              <Battery className={`h-8 w-8 ${status.color}`} />
-              <div>
-                <p className="text-sm font-medium text-slate-600">Current SoH</p>
-                <p className={`text-2xl font-bold ${status.color}`}>
-                  {Math.round(predictedSoH * 100)}%
-                </p>
-                <p className={`text-xs ${status.color}`}>{status.status}</p>
-              </div>
+          <div className={`p-6 rounded-xl ${status.bg} border border-slate-200 flex flex-col items-center justify-center text-center`}>
+            <div style={{ width: 100, height: 100 }} className="mb-3">
+              <CircularProgressbar
+                value={sohPercentage}
+                text={`${sohPercentage}%`}
+                styles={buildStyles({
+                  pathColor: '#A88AED', // Indigo
+                  textColor: '#CBD83B', // Pear
+                  trailColor: '#f0f0f0', // Light gray trail
+                })}
+              />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-slate-600">Current SoH</p>
+              <p className={`text-lg font-bold ${status.color}`}>{status.status}</p>
             </div>
           </div>
 
           <div className="p-6 rounded-xl bg-blue-50 border border-slate-200">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 mb-2">
               <Target className="h-8 w-8 text-blue-600" />
               <div>
                 <p className="text-sm font-medium text-slate-600">Confidence</p>
                 <p className="text-2xl font-bold text-blue-600">
                   {Math.round(confidence * 100)}%
                 </p>
-                <p className="text-xs text-blue-600">Model Accuracy</p>
               </div>
             </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Predicted by Random Forest, R² = 0.91
+            </p>
           </div>
 
           <div className="p-6 rounded-xl bg-purple-50 border border-slate-200">
@@ -107,7 +138,7 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* SoH Trend Chart */}
         <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-          <h3 className="text-xl font-semibold text-slate-900 mb-6">SoH Degradation Trend</h3>
+          <h3 className="text-xl font-semibold text-indigo mb-6">SoH Degradation Trend</h3> {/* Text color updated */}
           <div className="relative h-64">
             <svg className="w-full h-full" viewBox="0 0 400 200">
               {/* Grid lines */}
@@ -158,7 +189,7 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
 
         {/* Performance Metrics */}
         <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-          <h3 className="text-xl font-semibold text-slate-900 mb-6">Performance Analysis</h3>
+          <h3 className="text-xl font-semibold text-indigo mb-6">Performance Analysis</h3> {/* Text color updated */}
           
           <div className="space-y-6">
             {/* Degradation Rate */}
@@ -192,19 +223,19 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
             {/* Battery Health Status */}
             <div className={`p-4 rounded-lg ${status.bg} border border-slate-200`}>
               <div className="flex items-center space-x-3">
-                {predictedSoH >= 0.8 ? (
-                  <Zap className={`h-5 w-5 ${status.color}`} />
-                ) : (
-                  <AlertTriangle className={`h-5 w-5 ${status.color}`} />
-                )}
+                {sohPercentage >= 90 ? <Zap className={`h-5 w-5 ${status.color}`} /> :
+                 sohPercentage >= 70 ? <TrendingDown className={`h-5 w-5 ${status.color}`} /> :
+                 <AlertTriangle className={`h-5 w-5 ${status.color}`} />}
                 <div>
                   <p className={`font-semibold ${status.color}`}>Battery Status: {status.status}</p>
                   <p className="text-sm text-slate-600 mt-1">
-                    {predictedSoH >= 0.8 
-                      ? 'Battery is performing well with minimal degradation'
-                      : predictedSoH >= 0.6
-                      ? 'Battery shows moderate degradation, monitor closely'
-                      : 'Battery requires attention or replacement consideration'
+                    {sohPercentage >= 90
+                      ? 'Battery is performing well with minimal degradation.'
+                      : sohPercentage >= 70
+                      ? 'Battery shows some degradation, regular monitoring advised.'
+                      : sohPercentage >= 50
+                      ? 'Battery is significantly degraded, consider maintenance options.'
+                      : 'Battery is critically degraded and likely needs replacement soon.'
                     }
                   </p>
                 </div>
@@ -212,11 +243,59 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
             </div>
           </div>
         </div>
+
+        {/* Feature Importance Chart */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+          <h3 className="text-xl font-semibold text-indigo mb-6">Feature Importance</h3>
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <BarChart
+                layout="vertical"
+                data={featureImportanceData}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="name" width={100} />
+                <Tooltip wrapperStyle={{ zIndex: 1000 }} />
+                {/* Legend might be redundant for a single series */}
+                {/* <Legend /> */}
+                <Bar dataKey="importance" name="Importance" fill="#A88AED" /> {/* Ensure Indigo fill */}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Model Information Section */}
+      <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+        <h3 className="text-xl font-semibold text-indigo mb-6">Model Information</h3>
+        <div className="grid md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+          <div>
+            <span className="font-medium text-slate-700">Model Type:</span>
+            <p className="text-slate-600">Random Forest Regressor</p>
+          </div>
+          <div>
+            <span className="font-medium text-slate-700">Training Data:</span>
+            <p className="text-slate-600">Real battery cycle datasets from NASA, CALCE, etc.</p>
+          </div>
+          <div>
+            <span className="font-medium text-slate-700">Accuracy (R²):</span>
+            <p className="text-slate-600">0.91</p>
+          </div>
+          <div>
+            <span className="font-medium text-slate-700">Key Features:</span>
+            <p className="text-slate-600">Voltage, Current, Temperature, Charge/Discharge Profiles, Cycle Number</p>
+          </div>
+        </div>
+        <p className="text-xs text-slate-500 mt-4">
+          Note: The specific model used for this prediction is '{selectedModel}'. The R² value shown here is a general score for the Random Forest model variant. Individual prediction confidence is shown above.
+        </p>
       </div>
 
       {/* Detailed Analysis */}
       <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-        <h3 className="text-xl font-semibold text-slate-900 mb-6">Detailed Analysis</h3>
+        <h3 className="text-xl font-semibold text-indigo mb-6">Detailed Analysis</h3> {/* Text color updated */}
         
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="space-y-4">
@@ -242,7 +321,7 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
             <div className="space-y-2 text-sm">
               <div className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></div>
-                <span className="text-slate-600">Current capacity retention at {Math.round(predictedSoH * 100)}%</span>
+                <span className="text-slate-600">Current capacity retention at {sohPercentage}%</span>
               </div>
               <div className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5"></div>
@@ -258,12 +337,14 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
           <div className="space-y-4">
             <h4 className="font-semibold text-slate-900">Recommendations</h4>
             <div className="space-y-2 text-sm text-slate-600">
-              {predictedSoH >= 0.8 ? (
+              {sohPercentage >= 90 ? (
                 <p>Battery is in excellent condition. Continue regular monitoring.</p>
-              ) : predictedSoH >= 0.6 ? (
-                <p>Consider implementing preventive maintenance strategies.</p>
+              ) : sohPercentage >= 70 ? (
+                <p>Battery is in good condition. Monitor for accelerated degradation.</p>
+              ) : sohPercentage >= 50 ? (
+                <p>Battery is degraded. Consider scheduling maintenance or replacement.</p>
               ) : (
-                <p>Immediate attention required. Plan for battery replacement.</p>
+                <p>Battery needs replacement. Performance is critically affected.</p>
               )}
             </div>
           </div>

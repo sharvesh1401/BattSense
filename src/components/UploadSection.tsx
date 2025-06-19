@@ -10,6 +10,7 @@ interface UploadSectionProps {
 const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedModel, onModelChange }) => {
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileErrorMessages, setFileErrorMessages] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const models = [
@@ -31,20 +32,32 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    
+    setFileErrorMessages([]); // Clear previous errors
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
       if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
         setSelectedFile(file);
+      } else {
+        setFileErrorMessages(['Invalid file type. Please upload a CSV file.']);
+        setSelectedFile(null);
       }
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileErrorMessages([]); // Clear previous errors
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
+      if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+        setSelectedFile(file);
+      } else {
+        setFileErrorMessages(['Invalid file type. Please upload a CSV file.']);
+        setSelectedFile(null);
+        // Also clear the input field value to allow re-selection of the same "invalid" file if the user wishes
+        e.target.value = '';
+      }
     }
   };
 
@@ -76,6 +89,7 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
         <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
           <h3 className="text-2xl font-semibold text-slate-900 mb-6">Dataset Upload</h3>
           
+          <label htmlFor="csvFileInput" className="sr-only">Upload CSV dataset</label>
           <div
             className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
               dragOver 
@@ -111,12 +125,21 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
             )}
             
             <input
+              id="csvFileInput"
               type="file"
               accept=".csv"
               onChange={handleFileSelect}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
           </div>
+
+          {fileErrorMessages.length > 0 && (
+            <div className="mt-2 text-red-600 text-sm">
+              {fileErrorMessages.map((msg, idx) => (
+                <p key={idx}>{msg}</p>
+              ))}
+            </div>
+          )}
 
           {/* File Requirements */}
           <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
@@ -136,9 +159,9 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
 
         {/* Model Selection */}
         <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-          <h3 className="text-2xl font-semibold text-slate-900 mb-6">Select ML Model</h3>
+          <h3 id="model-selection-heading" className="text-2xl font-semibold text-slate-900 mb-6">Select ML Model</h3>
           
-          <div className="space-y-4">
+          <div role="radiogroup" aria-labelledby="model-selection-heading" className="space-y-4">
             {models.map((model) => {
               const IconComponent = model.icon;
               const isSelected = selectedModel === model.id;
@@ -146,12 +169,20 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
               return (
                 <div
                   key={model.id}
+                  role="radio"
+                  aria-checked={isSelected}
+                  tabIndex={0}
                   className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:shadow-md ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50 shadow-lg'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                   onClick={() => handleModelSelect(model.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleModelSelect(model.id);
+                    }
+                  }}
                 >
                   <div className="flex items-center space-x-4">
                     <div className={`p-2 rounded-lg transition-colors ${
@@ -201,7 +232,7 @@ const UploadSection: React.FC<UploadSectionProps> = ({ onFileUpload, selectedMod
             className={`w-full mt-8 py-4 px-6 rounded-xl font-semibold transition-all duration-200 ${
               !selectedFile || isProcessing
                 ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                : 'bg-pear hover:bg-pear/90 text-gray-800 shadow-lg hover:shadow-xl transform hover:scale-105'
             }`}
           >
             {isProcessing ? (
