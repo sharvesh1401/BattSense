@@ -14,6 +14,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
+    "baseUrl": ".", // Add baseUrl
+    "paths": {      // Add paths
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"]
+    },
 
     /* Linting */
     "strict": true,

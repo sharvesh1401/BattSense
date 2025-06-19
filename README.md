@@ -1,4 +1,8 @@
-
+<!--
+  Replace YOUR_SITE_ID and YOUR_SITE_NAME with your actual Netlify site details
+  after deploying the project.
+-->
+[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR_SITE_ID/deploy-status)](https://app.netlify.com/sites/YOUR_SITE_NAME/deploys)
 
 # ⚡ BattSense: Battery Health Prediction Using Machine Learning
 
