@@ -175,7 +175,7 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
                   cx={(index * 10 / (chartData.length - 1)) * 380 + 10}
                   cy={200 - (point.soh * 180 + 10)}
                   r="4"
-                  fill="#3b82f6"
+                  fill="#A88AED" // Changed to Indigo
                   className="hover:r-6 transition-all cursor-pointer"
                 />
               ))}

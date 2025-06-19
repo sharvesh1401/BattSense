@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-ivory text-gray-800;
+html, body {
+  background-color: #FFFEEC; /* Ivory */
+  color: #1f2937; /* gray-800 */
+  min-height: 100%;
 }
