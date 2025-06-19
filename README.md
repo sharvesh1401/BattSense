@@ -14,7 +14,7 @@ To build an intelligent model that can **predict battery health (SOH)** using da
 
 ## 📁 Dataset
 
-- **Source**: Battery data collected from operational cycles (source not disclosed here).
+- **Source**: Battery data collected from operational cycles (source is user defined).
 - **Features** include:
   - `Battery Voltage`
   - `Current`
