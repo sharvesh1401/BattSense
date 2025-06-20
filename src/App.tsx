@@ -169,8 +169,50 @@ function App() {
         </div>
       </header>
 
+      {/* Mobile Dropdown Panel - Refactored positioning, size, styling, and animation */}
+      <div
+        className={`md:hidden fixed top-20 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm z-[55]
+                   bg-black/90 backdrop-blur-sm rounded-xl shadow-2xl p-5
+                   transition-all duration-300 ease-in-out ${
+          isMobileMenuOpen
+            ? 'opacity-100 transform translate-y-0 scale-100 pointer-events-auto'
+            : 'opacity-0 transform -translate-y-4 scale-95 pointer-events-none'
+        }`}
+        // onClick={toggleMobileMenu} // Removed: panel itself shouldn't close on click, only backdrop (not used here) or X
+      >
+        <div className="flex flex-col items-center space-y-4 relative"> {/* Content wrapper */}
+            <button
+              onClick={toggleMobileMenu}
+              className="absolute top-0 right-0 p-1 rounded-md text-ivory/75 hover:text-ivory hover:bg-neutral-700/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary" // Adjusted position for smaller panel
+              aria-label="Close mobile menu"
+            >
+              <X size={24} /> {/* Adjusted size for smaller panel context */}
+            </button>
+
+            {/* Navigation Buttons within Panel - Applying new styles */}
+            <button
+              onClick={() => { setActiveTab('upload'); setIsMobileMenuOpen(false); }}
+              className="bg-primary text-black px-4 py-3 rounded-xl font-medium text-base w-full flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105 hover:bg-primary-dark shadow-md"
+            >
+              <Upload className="h-5 w-5 mr-3" /> Upload
+            </button>
+            <button
+              onClick={() => { setActiveTab('dashboard'); setIsMobileMenuOpen(false); }}
+              className="bg-primary text-black px-4 py-3 rounded-xl font-medium text-base w-full flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105 hover:bg-primary-dark shadow-md"
+            >
+              <BarChart3 className="h-5 w-5 mr-3" /> Dashboard
+            </button>
+            <button
+              onClick={() => { setActiveTab('models'); setIsMobileMenuOpen(false); }}
+              className="bg-primary text-black px-4 py-3 rounded-xl font-medium text-base w-full flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105 hover:bg-primary-dark shadow-md"
+            >
+              <Settings className="h-5 w-5 mr-3" /> Models
+            </button>
+          </div>
+      </div>
+
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative bg-transparent"> {/* Added bg-transparent */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative bg-transparent">
         {activeTab !== 'landing' && (
           <AnimatedDotBackground className="absolute inset-0 -z-10" />
         )}
