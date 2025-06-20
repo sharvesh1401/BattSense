@@ -97,11 +97,11 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative"> {/* Added relative positioning */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative bg-transparent"> {/* Added bg-transparent */}
         {activeTab !== 'landing' && (
           <AnimatedDotBackground className="absolute inset-0 -z-10" />
         )}
-        <div className="relative z-10"> {/* This div will contain the actual content, ensuring it's above the background */}
+        <div className="relative z-10 bg-transparent"> {/* Added bg-transparent. This div will contain the actual content, ensuring it's above the background */}
           {activeTab === 'upload' && (
             <div className="animate-slide-up">
               <UploadSection
