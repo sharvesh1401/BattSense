@@ -4,10 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        pear: '#CBD83B',
-        indigo: '#A88AED',
-        ivory: '#FFFEEC',
-        'color-text': '#1a1a1a',
+        primary: '#CBD83B',       // Pear green (same as old pear)
+        'primary-dark': '#b0c02b', // Darker pear green for hover
+        secondary: '#A88AED',     // Indigo (same as old indigo)
+        'secondary-dark': '#8669d1', // Darker indigo for hover
+        ivory: '#FFFEEC',         // Neutral/Foreground (same as old ivory)
+        highlight: '#6BEF88',     // Soft green for success/signal
+        neutral: {
+          800: '#1f1f1f',       // Dark shade for card/input backgrounds
+          900: '#121212',       // Darker shade for card/input backgrounds
+        },
+        // Old 'pear', 'indigo', 'ivory' are effectively replaced by new names.
+        // 'color-text' is removed as default text color will be ivory on black bg.
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',

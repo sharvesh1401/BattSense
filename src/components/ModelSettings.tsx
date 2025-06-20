@@ -75,62 +75,60 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in px-4 sm:px-0 text-ivory">
       {/* Header */}
       <div className="text-center animate-slide-up">
-        <h2 className="text-4xl font-bold text-color-text mb-4">Model Management</h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">Model Management</h2>
+        <p className="text-lg sm:text-xl max-w-2xl mx-auto text-ivory/75">
           Configure and manage machine learning models for battery SoH prediction
         </p>
       </div>
 
-      {/* Model Selection */}
-      <div className="bg-white rounded-2xl shadow-lg p-8 animate-scale-in">
-        <h3 className="text-2xl font-semibold text-color-text mb-6">Available Models</h3>
+      {/* Model Selection Card Section */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 sm:p-6 lg:p-8 animate-scale-in">
+        <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-ivory">Available Models</h3>
         
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {models.map((model) => {
             const IconComponent = model.icon;
             const isSelected = selectedModel === model.id;
             
             return (
+              // Model Selection Card Styling
               <div
                 key={model.id}
-                className={`p-6 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 animate-fade-in ${
+                className={`p-4 sm:p-6 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 animate-fade-in border-2 ${
                   isSelected
-                    ? 'border-2 border-indigo bg-indigo/5 shadow-lg'
-                    : 'border-2 border-gray-200 hover:border-pear/50 hover:shadow-md'
+                    ? 'border-secondary bg-neutral-700 shadow-md'
+                    : 'border-neutral-700 bg-neutral-800 hover:border-secondary/75'
                 }`}
                 onClick={() => onModelChange(model.id)}
               >
-                <div className="flex items-center space-x-3 mb-4">
+                <div className="flex items-start sm:items-center space-x-3 mb-3 sm:mb-4">
+                  {/* Icon Container Styling */}
                   <div className={`p-2 rounded-lg transition-colors duration-200 ${
-                    isSelected ? 'bg-indigo text-white' : 'bg-gray-100 text-gray-600'
+                     isSelected ? 'bg-secondary text-ivory' : 'bg-neutral-700 text-ivory/75'
                   }`}>
-                    <IconComponent className="h-6 w-6" />
+                    <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-color-text">{model.name}</h4>
-                    <div className="flex items-center space-x-4 mt-1">
-                      <span className="text-sm text-gray-500">
-                        {model.accuracy}% accuracy
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        {model.speed} speed
-                      </span>
+                    <h4 className="font-semibold text-base sm:text-lg text-ivory">{model.name}</h4>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mt-1">
+                      <span className="text-xs sm:text-sm text-ivory/60">{model.accuracy}% accuracy</span>
+                      <span className="text-xs sm:text-sm text-ivory/60">{model.speed} speed</span>
                     </div>
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-600 mb-4">{model.description}</p>
+                <p className="text-xs sm:text-sm mb-3 sm:mb-4 text-ivory/75">{model.description}</p>
                 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <div>
-                    <h5 className="text-sm font-medium text-pear mb-1">Advantages</h5>
-                    <ul className="text-xs text-gray-600 space-y-1">
+                    <h5 className="text-xs sm:text-sm font-medium text-primary mb-1">Advantages</h5>
+                    <ul className="text-xs space-y-0.5 sm:space-y-1 text-ivory/75">
                       {model.pros.map((pro, index) => (
                         <li key={index} className="flex items-center space-x-1">
-                          <CheckCircle className="h-3 w-3 text-pear" />
+                          <CheckCircle className="h-3 w-3 flex-shrink-0 text-primary" />
                           <span>{pro}</span>
                         </li>
                       ))}
@@ -138,11 +136,11 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
                   </div>
                   
                   <div>
-                    <h5 className="text-sm font-medium text-orange-700 mb-1">Considerations</h5>
-                    <ul className="text-xs text-gray-600 space-y-1">
+                    <h5 className="text-xs sm:text-sm font-medium text-ivory/75 mb-1">Considerations</h5>
+                    <ul className="text-xs space-y-0.5 sm:space-y-1 text-ivory/75">
                       {model.cons.map((con, index) => (
                         <li key={index} className="flex items-center space-x-1">
-                          <div className="w-3 h-3 rounded-full bg-orange-300"></div>
+                          <div className="w-3 h-3 rounded-full flex-shrink-0 bg-neutral-600"></div>
                           <span>{con}</span>
                         </li>
                       ))}
@@ -155,50 +153,53 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
         </div>
       </div>
 
-      {/* Current Model Details */}
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Model Parameters */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 animate-slide-up">
-          <h3 className="text-xl font-semibold text-color-text mb-6 flex items-center space-x-2">
+      {/* Current Model Details Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        {/* Model Parameters Card */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 sm:p-6 lg:p-8 animate-slide-up">
+          <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 flex items-center space-x-2 text-ivory">
             <span>{models.find(m => m.id === selectedModel)?.name} Parameters</span>
-            {selectedModel === 'DeepSeek' && <Sparkles className="h-5 w-5 text-indigo" />}
+            {selectedModel === 'DeepSeek' && <Sparkles className="h-5 w-5 text-secondary" />}
           </h3>
           
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {Object.entries(models.find(m => m.id === selectedModel)?.params || {}).map(([key, value]) => (
-              <div key={key} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg transition-colors duration-200 hover:bg-indigo/5">
-                <span className="font-medium text-color-text capitalize">
+              // Parameter List Item Styling
+              <div key={key} className="flex flex-col sm:flex-row justify-between sm:items-center p-2 sm:p-3 bg-neutral-800 rounded-lg transition-colors duration-200">
+                <span className="font-medium capitalize text-sm sm:text-base text-ivory">
                   {key.replace(/([A-Z])/g, ' $1').trim()}
                 </span>
-                <span className="text-gray-600 font-mono text-sm">
+                <span className="font-mono text-xs sm:text-sm mt-1 sm:mt-0 text-ivory/75">
                   {Array.isArray(value) ? value.join(', ') : String(value)}
                 </span>
               </div>
             ))}
           </div>
           
+          {/* DeepSeek Info Box Styling */}
           {selectedModel === 'DeepSeek' && (
-            <div className="mt-4 p-3 bg-indigo/5 rounded-lg animate-fade-in">
-              <p className="text-xs text-indigo flex items-center space-x-1">
+            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-neutral-800 rounded-lg animate-fade-in">
+              <p className="text-xs flex items-center space-x-1 text-secondary">
                 <Sparkles className="h-3 w-3" />
                 <span>Connected to DeepSeek AI API for real-time predictions</span>
               </p>
             </div>
           )}
           
+          {/* Retrain Button Styling (Primary if active, else disabled) */}
           <button
             onClick={handleRetrain}
             disabled={isTraining || selectedModel === 'DeepSeek'}
-            className={`w-full mt-6 py-3 px-4 rounded-lg font-semibold transition-all duration-200 hover:scale-105 ${
+            className={`w-full mt-4 sm:mt-6 py-2.5 sm:py-3 px-4 rounded-lg font-semibold transition-all duration-200 hover:scale-105 text-sm sm:text-base shadow-md ${
               isTraining || selectedModel === 'DeepSeek'
-                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                : 'bg-pear hover:bg-indigo text-color-text hover:text-white shadow-lg hover:shadow-xl'
+                ? 'bg-neutral-700 text-ivory/50 cursor-not-allowed' // Disabled state
+                : 'bg-primary text-black hover:bg-primary-dark' // Active state
             }`}
           >
             {isTraining ? (
               <div className="flex items-center justify-center space-x-2">
-                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-                <span>Retraining Model...</span>
+                <div className="w-4 h-4 border-2 border-ivory/50 border-t-ivory rounded-full animate-spin"></div>
+                <span className="text-sm sm:text-base">Retraining Model...</span>
               </div>
             ) : selectedModel === 'DeepSeek' ? (
               'DeepSeek models are pre-trained'
@@ -208,35 +209,33 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
           </button>
         </div>
 
-        {/* Performance Metrics */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 animate-slide-up">
-          <h3 className="text-xl font-semibold text-color-text mb-6">Performance Metrics</h3>
+        {/* Performance Metrics Card */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 sm:p-6 lg:p-8 animate-slide-up">
+          <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-ivory">Performance Metrics</h3>
           
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {performanceMetrics.map((metric, index) => (
               <div key={index} className="flex items-center justify-between animate-fade-in">
                 <div>
-                  <p className="font-medium text-color-text">{metric.name}</p>
-                  <p className="text-sm text-gray-500">Current model performance</p>
+                  <p className="font-medium text-sm sm:text-base text-ivory">{metric.name}</p>
+                  <p className="text-xs sm:text-sm text-ivory/75">Current model performance</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-indigo">
-                    {metric.value}
-                  </p>
-                  <p className="text-sm text-gray-500">{metric.unit}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-secondary">{metric.value}</p>
+                  <p className="text-xs sm:text-sm text-ivory/75">{metric.unit}</p>
                 </div>
               </div>
             ))}
           </div>
           
-          {/* Accuracy Chart */}
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg animate-fade-in">
-            <h4 className="font-medium text-color-text mb-4">Training Progress</h4>
-            <div className="h-32 flex items-end justify-between space-x-1">
+          {/* Accuracy Chart Styling */}
+          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-neutral-800 rounded-lg animate-fade-in">
+            <h4 className="font-medium mb-3 sm:mb-4 text-sm sm:text-base text-ivory">Training Progress</h4>
+            <div className="h-24 sm:h-32 flex items-end justify-between space-x-0.5 sm:space-x-1">
               {Array.from({ length: 20 }, (_, i) => (
                 <div
                   key={i}
-                  className="bg-gradient-to-t from-indigo to-pear rounded-t transition-all duration-500 hover:scale-110"
+                  className="bg-gradient-to-t from-secondary to-primary rounded-t transition-all duration-500 hover:scale-110"
                   style={{
                     height: `${60 + (i * 2) + Math.random() * 10}%`,
                     width: '4%'
@@ -244,7 +243,7 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
                 />
               ))}
             </div>
-            <div className="flex justify-between text-sm text-gray-500 mt-2">
+            <div className="flex justify-between text-xs sm:text-sm mt-2 text-ivory/60">
               <span>Epoch 1</span>
               <span>Epoch 100</span>
             </div>
@@ -252,68 +251,58 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
         </div>
       </div>
 
-      {/* Advanced Settings */}
-      <div className="bg-white rounded-2xl shadow-lg p-8 animate-slide-up">
-        <h3 className="text-xl font-semibold text-color-text mb-6">Advanced Configuration</h3>
+      {/* Advanced Configuration Card */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 sm:p-6 lg:p-8 animate-slide-up">
+        <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-ivory">Advanced Configuration</h3>
         
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="space-y-4">
-            <h4 className="font-medium text-color-text">Data Preprocessing</h4>
-            <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="space-y-3 sm:space-y-4">
+            <h4 className="font-medium text-base sm:text-lg text-ivory">Data Preprocessing</h4>
+            <div className="space-y-2 sm:space-y-3">
               <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Normalize input features</span>
+                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Normalize input features</span>
               </label>
               <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Remove outliers</span>
+                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Remove outliers</span>
               </label>
               <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Apply smoothing</span>
-              </label>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <h4 className="font-medium text-color-text">Validation</h4>
-            <div className="space-y-3">
-              <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Cross-validation</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Early stopping</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Hyperparameter tuning</span>
+                <input type="checkbox" className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Apply smoothing</span>
               </label>
             </div>
           </div>
           
-          <div className="space-y-4">
-            <h4 className="font-medium text-color-text">Output</h4>
-            <div className="space-y-3">
+          <div className="space-y-3 sm:space-y-4">
+            <h4 className="font-medium text-base sm:text-lg text-ivory">Validation</h4>
+            <div className="space-y-2 sm:space-y-3">
               <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Confidence intervals</span>
+                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Cross-validation</span>
               </label>
               <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Uncertainty quantification</span>
+                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Early stopping</span>
               </label>
               <label className="flex items-center space-x-2 cursor-pointer group">
-                <input type="checkbox" className="rounded transition-colors duration-200 text-indigo focus:ring-indigo" />
-                <span className="text-sm group-hover:text-indigo transition-colors duration-200">Feature importance</span>
+                <input type="checkbox" className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Hyperparameter tuning</span>
               </label>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ModelSettings;
+          
+          <div className="space-y-3 sm:space-y-4">
+            <h4 className="font-medium text-base sm:text-lg text-ivory">Output</h4>
+            <div className="space-y-2 sm:space-y-3">
+              <label className="flex items-center space-x-2 cursor-pointer group">
+                <input type="checkbox" defaultChecked className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Confidence intervals</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer group">
+                <input type="checkbox" className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Uncertainty quantification</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer group">
+                <input type="checkbox" className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
+                <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Feature importance</span>
