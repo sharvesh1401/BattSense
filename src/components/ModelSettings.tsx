@@ -75,20 +75,20 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in px-4 sm:px-0"> {/* Adjusted spacing and padding */}
       {/* Header */}
       <div className="text-center animate-slide-up">
-        <h2 className="text-4xl font-bold text-color-text mb-4">Model Management</h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold text-color-text mb-3 sm:mb-4">Model Management</h2> {/* Responsive text and margin */}
+        <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto"> {/* Responsive text */}
           Configure and manage machine learning models for battery SoH prediction
         </p>
       </div>
 
       {/* Model Selection */}
-      <div className="bg-white rounded-2xl shadow-lg p-8 animate-scale-in">
-        <h3 className="text-2xl font-semibold text-color-text mb-6">Available Models</h3>
+      <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 animate-scale-in"> {/* Adjusted padding */}
+        <h3 className="text-xl sm:text-2xl font-semibold text-color-text mb-4 sm:mb-6">Available Models</h3> {/* Responsive text and margin */}
         
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"> {/* Responsive grid and gap */}
           {models.map((model) => {
             const IconComponent = model.icon;
             const isSelected = selectedModel === model.id;
@@ -96,41 +96,41 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
             return (
               <div
                 key={model.id}
-                className={`p-6 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 animate-fade-in ${
+                className={`p-4 sm:p-6 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 animate-fade-in ${ /* Adjusted padding */
                   isSelected
                     ? 'border-2 border-indigo bg-indigo/5 shadow-lg'
                     : 'border-2 border-gray-200 hover:border-pear/50 hover:shadow-md'
                 }`}
                 onClick={() => onModelChange(model.id)}
               >
-                <div className="flex items-center space-x-3 mb-4">
+                <div className="flex items-start sm:items-center space-x-3 mb-3 sm:mb-4"> {/* Adjusted alignment for very small screens */}
                   <div className={`p-2 rounded-lg transition-colors duration-200 ${
                     isSelected ? 'bg-indigo text-white' : 'bg-gray-100 text-gray-600'
                   }`}>
-                    <IconComponent className="h-6 w-6" />
+                    <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" /> {/* Responsive icon */}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-color-text">{model.name}</h4>
-                    <div className="flex items-center space-x-4 mt-1">
-                      <span className="text-sm text-gray-500">
+                    <h4 className="font-semibold text-color-text text-base sm:text-lg">{model.name}</h4> {/* Responsive text */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mt-1"> {/* Stack info on small screens */}
+                      <span className="text-xs sm:text-sm text-gray-500"> {/* Responsive text */}
                         {model.accuracy}% accuracy
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-xs sm:text-sm text-gray-500"> {/* Responsive text */}
                         {model.speed} speed
                       </span>
                     </div>
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-600 mb-4">{model.description}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">{model.description}</p> {/* Responsive text and margin */}
                 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3"> {/* Responsive spacing */}
                   <div>
-                    <h5 className="text-sm font-medium text-pear mb-1">Advantages</h5>
-                    <ul className="text-xs text-gray-600 space-y-1">
+                    <h5 className="text-xs sm:text-sm font-medium text-pear mb-1">Advantages</h5> {/* Responsive text */}
+                    <ul className="text-xs text-gray-600 space-y-0.5 sm:space-y-1"> {/* Responsive spacing */}
                       {model.pros.map((pro, index) => (
                         <li key={index} className="flex items-center space-x-1">
-                          <CheckCircle className="h-3 w-3 text-pear" />
+                          <CheckCircle className="h-3 w-3 text-pear flex-shrink-0" /> {/* Added flex-shrink-0 */}
                           <span>{pro}</span>
                         </li>
                       ))}
@@ -138,11 +138,11 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
                   </div>
                   
                   <div>
-                    <h5 className="text-sm font-medium text-orange-700 mb-1">Considerations</h5>
-                    <ul className="text-xs text-gray-600 space-y-1">
+                    <h5 className="text-xs sm:text-sm font-medium text-orange-700 mb-1">Considerations</h5> {/* Responsive text */}
+                    <ul className="text-xs text-gray-600 space-y-0.5 sm:space-y-1"> {/* Responsive spacing */}
                       {model.cons.map((con, index) => (
                         <li key={index} className="flex items-center space-x-1">
-                          <div className="w-3 h-3 rounded-full bg-orange-300"></div>
+                          <div className="w-3 h-3 rounded-full bg-orange-300 flex-shrink-0"></div> {/* Added flex-shrink-0 */}
                           <span>{con}</span>
                         </li>
                       ))}
@@ -156,21 +156,21 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
       </div>
 
       {/* Current Model Details */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"> {/* Responsive grid and gap */}
         {/* Model Parameters */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 animate-slide-up">
-          <h3 className="text-xl font-semibold text-color-text mb-6 flex items-center space-x-2">
+        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 animate-slide-up"> {/* Adjusted padding */}
+          <h3 className="text-lg sm:text-xl font-semibold text-color-text mb-4 sm:mb-6 flex items-center space-x-2"> {/* Responsive text and margin */}
             <span>{models.find(m => m.id === selectedModel)?.name} Parameters</span>
             {selectedModel === 'DeepSeek' && <Sparkles className="h-5 w-5 text-indigo" />}
           </h3>
           
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4"> {/* Responsive spacing */}
             {Object.entries(models.find(m => m.id === selectedModel)?.params || {}).map(([key, value]) => (
-              <div key={key} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg transition-colors duration-200 hover:bg-indigo/5">
-                <span className="font-medium text-color-text capitalize">
+              <div key={key} className="flex flex-col sm:flex-row justify-between sm:items-center p-2 sm:p-3 bg-gray-50 rounded-lg transition-colors duration-200 hover:bg-indigo/5"> {/* Responsive padding and flex */}
+                <span className="font-medium text-color-text capitalize text-sm sm:text-base"> {/* Responsive text */}
                   {key.replace(/([A-Z])/g, ' $1').trim()}
                 </span>
-                <span className="text-gray-600 font-mono text-sm">
+                <span className="text-gray-600 font-mono text-xs sm:text-sm mt-1 sm:mt-0"> {/* Responsive text and margin */}
                   {Array.isArray(value) ? value.join(', ') : String(value)}
                 </span>
               </div>
@@ -178,7 +178,7 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
           </div>
           
           {selectedModel === 'DeepSeek' && (
-            <div className="mt-4 p-3 bg-indigo/5 rounded-lg animate-fade-in">
+            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-indigo/5 rounded-lg animate-fade-in"> {/* Responsive margin and padding */}
               <p className="text-xs text-indigo flex items-center space-x-1">
                 <Sparkles className="h-3 w-3" />
                 <span>Connected to DeepSeek AI API for real-time predictions</span>
@@ -189,7 +189,7 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
           <button
             onClick={handleRetrain}
             disabled={isTraining || selectedModel === 'DeepSeek'}
-            className={`w-full mt-6 py-3 px-4 rounded-lg font-semibold transition-all duration-200 hover:scale-105 ${
+            className={`w-full mt-4 sm:mt-6 py-2.5 sm:py-3 px-4 rounded-lg font-semibold transition-all duration-200 hover:scale-105 text-sm sm:text-base ${ /* Responsive margin, padding, text */
               isTraining || selectedModel === 'DeepSeek'
                 ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                 : 'bg-pear hover:bg-indigo text-color-text hover:text-white shadow-lg hover:shadow-xl'
@@ -198,7 +198,7 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
             {isTraining ? (
               <div className="flex items-center justify-center space-x-2">
                 <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-                <span>Retraining Model...</span>
+                <span className="text-sm sm:text-base">Retraining Model...</span> {/* Responsive text */}
               </div>
             ) : selectedModel === 'DeepSeek' ? (
               'DeepSeek models are pre-trained'
@@ -209,21 +209,21 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
         </div>
 
         {/* Performance Metrics */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 animate-slide-up">
-          <h3 className="text-xl font-semibold text-color-text mb-6">Performance Metrics</h3>
+        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 animate-slide-up"> {/* Adjusted padding */}
+          <h3 className="text-lg sm:text-xl font-semibold text-color-text mb-4 sm:mb-6">Performance Metrics</h3> {/* Responsive text and margin */}
           
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6"> {/* Responsive spacing */}
             {performanceMetrics.map((metric, index) => (
               <div key={index} className="flex items-center justify-between animate-fade-in">
                 <div>
-                  <p className="font-medium text-color-text">{metric.name}</p>
-                  <p className="text-sm text-gray-500">Current model performance</p>
+                  <p className="font-medium text-color-text text-sm sm:text-base">{metric.name}</p> {/* Responsive text */}
+                  <p className="text-xs sm:text-sm text-gray-500">Current model performance</p> {/* Responsive text */}
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-indigo">
+                  <p className="text-xl sm:text-2xl font-bold text-indigo"> {/* Responsive text */}
                     {metric.value}
                   </p>
-                  <p className="text-sm text-gray-500">{metric.unit}</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{metric.unit}</p> {/* Responsive text */}
                 </div>
               </div>
             ))}
