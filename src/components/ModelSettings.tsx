@@ -306,3 +306,4 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
               <label className="flex items-center space-x-2 cursor-pointer group">
                 <input type="checkbox" className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
                 <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Feature importance</span>
+              </label>
