@@ -103,15 +103,6 @@ function App() {
 
   return (
     <div className="min-h-screen animate-fade-in">
-      {/* Hamburger Menu Button - visible only on small screens */}
-      <button
-        onClick={toggleMobileMenu}
-        className="md:hidden fixed top-4 left-4 z-[60] p-2 rounded-md text-ivory hover:bg-neutral-800/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
-        aria-label="Open mobile menu"
-      >
-        <Menu size={28} />
-      </button>
-
       {/* Header - Added transform classes for scroll behavior */}
       <header
         className={`bg-neutral-900 backdrop-blur-sm sticky top-0 z-50 shadow-md transition-transform duration-300 ease-in-out ${
@@ -119,8 +110,17 @@ function App() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Added 'relative' to this div for absolute positioning of the logo/title */}
-          <div className="relative flex flex-col sm:flex-row items-center sm:justify-between h-auto sm:h-16 py-3 sm:py-0">
+          {/* Changed to always flex row, fixed height, and always justify-between */}
+          <div className="relative flex items-center justify-between h-14">
+            {/* Hamburger Menu Button - moved into header flow, visible only on small screens */}
+            <button
+              onClick={toggleMobileMenu}
+              className="md:hidden z-[60] p-2 rounded-md text-ivory hover:bg-neutral-800/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+              aria-label="Open mobile menu"
+            >
+              <Menu size={28} />
+            </button>
+
             {/* Logo/Title Group: Centered absolutely */}
             <a
               href="#"
@@ -130,7 +130,7 @@ function App() {
               <div className="p-2 rounded-lg transition-transform duration-200 hover:scale-110">
                 <Battery className="h-6 w-6 text-primary" />
               </div>
-              <h1 className="text-xl font-bold text-ivory">BattSense</h1>
+              <h1 className="text-lg sm:text-xl font-bold text-ivory">BattSense</h1> {/* Updated text size */}
             </a>
             
             {/* Desktop Navigation - hidden on small screens. Changed sm:ml-auto to md:ml-auto for breakpoint consistency. */}
