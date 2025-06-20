@@ -5,7 +5,40 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BattSense - Battery Health Predictor</title>
+
+    <style>
+      :root {
+        --color-background: #FFFEEC;
+        --color-primary: #A88AED;
+        --color-accent: #CBD83B;
+        --color-text: #1a1a1a;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-text);
+      }
+
+      /* Optional: Apply base styling to root container */
+      #root {
+        min-height: 100vh;
+        padding: 1rem;
+        box-sizing: border-box;
+      }
+
+      /* Optional: Add accent styles for buttons or links */
+      a, button {
+        color: var(--color-primary);
+      }
+
+      a:hover, button:hover {
+        color: var(--color-accent);
+      }
+    </style>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

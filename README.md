@@ -1,4 +1,3 @@
-BattSense
 
 # ⚡ BattSense: Battery Health Prediction Using Machine Learning
 
