@@ -99,7 +99,7 @@ function App() {
 
   return (
     <div className="min-h-screen animate-fade-in">
-      {/* Header */}
+      {/* Header - Contains in-flow hamburger, abs-centered logo, and desktop nav */}
       <header
         className={`bg-neutral-900 backdrop-blur-sm sticky top-0 z-50 shadow-md transition-transform duration-300 ease-in-out ${
           (showHeader || isMobileMenuOpen) ? 'transform translate-y-0' : 'transform -translate-y-full'
