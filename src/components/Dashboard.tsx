@@ -4,6 +4,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getSoHStatus } from '@utils/batteryUtils';
+import { generateBatteryReport } from '@utils/pdfGenerator';
 import AnimatedCounter from './AnimatedCounter';
 
 interface DashboardProps {
@@ -13,6 +14,37 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, selectedModel }) => {
+  const handleExportReport = () => {
+    if (!predictionResults) {
+      alert('No prediction data available to export.');
+      return;
+    }
+
+    try {
+      const reportData = {
+        batteryId: predictionResults.batteryId,
+        predictedSoH: predictionResults.predictedSoH,
+        confidence: predictionResults.confidence,
+        cycleCount: predictionResults.cycleCount,
+        degradationRate: predictionResults.degradationRate,
+        remainingCycles: predictionResults.remainingCycles,
+        model: selectedModel,
+        uploadedFileName: uploadedFile?.name,
+        inputData: {
+          voltage: 3.7, // These would come from actual form data
+          current: 2.5,
+          temperature: 25,
+          capacity: 2.8
+        }
+      };
+
+      generateBatteryReport(reportData);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Failed to generate report. Please try again.');
+    }
+  };
+
   if (!predictionResults) {
     return (
       <div className="max-w-4xl mx-auto text-center py-20 animate-fade-in">
@@ -66,7 +98,10 @@ const Dashboard: React.FC<DashboardProps> = ({ uploadedFile, predictionResults, 
               )}
             </p>
           </div>
-          <button className="flex items-center space-x-2 bg-pear hover:bg-indigo text-color-text hover:text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105">
+          <button 
+            onClick={handleExportReport}
+            className="flex items-center space-x-2 bg-pear hover:bg-indigo text-color-text hover:text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+          >
             <Download className="h-4 w-4" />
             <span>Export Report</span>
           </button>
