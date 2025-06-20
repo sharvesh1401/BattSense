@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'; // Added useCallback
+import React, { useState, useEffect, useCallback } from 'react';
 import { Battery, Upload, BarChart3, Settings, Menu, X } from 'lucide-react';
 import LandingPage from './components/LandingPage';
 import AnimatedDotBackground from './components/AnimatedDotBackground';
@@ -94,23 +94,18 @@ function App() {
   };
 
   if (activeTab === 'landing') {
-    // It's better to apply bg-ivory directly to LandingPage or its container
-    // to avoid it flashing or affecting other views if App's root div changes bg.
-    // For now, LandingPage itself should define its background.
-    // We'll assume LandingPage.tsx will be updated to have bg-ivory.
     return <LandingPage onGetStarted={() => setActiveTab('upload')} />;
   }
 
   return (
     <div className="min-h-screen animate-fade-in">
-      {/* Header - Added transform classes for scroll behavior */}
+      {/* Header */}
       <header
         className={`bg-neutral-900 backdrop-blur-sm sticky top-0 z-50 shadow-md transition-transform duration-300 ease-in-out ${
           (showHeader || isMobileMenuOpen) ? 'transform translate-y-0' : 'transform -translate-y-full'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Changed to always flex row, fixed height, and always justify-between */}
           <div className="relative flex items-center justify-between h-14">
             {/* Hamburger Menu Button - moved into header flow, visible only on small screens */}
             <button
@@ -130,14 +125,14 @@ function App() {
               <div className="p-2 rounded-lg transition-transform duration-200 hover:scale-110">
                 <Battery className="h-6 w-6 text-primary" />
               </div>
-              <h1 className="text-lg sm:text-xl font-bold text-ivory">BattSense</h1> {/* Updated text size */}
+              <h1 className="text-lg sm:text-xl font-bold text-ivory">BattSense</h1>
             </a>
             
-            {/* Desktop Navigation - hidden on small screens. Changed sm:ml-auto to md:ml-auto for breakpoint consistency. */}
-            <nav className="hidden md:flex flex-col sm:flex-row items-stretch sm:items-center w-full sm:w-auto mt-3 sm:mt-0 sm:space-x-1 space-y-1 sm:space-y-0 md:ml-auto">
+            {/* Desktop Navigation - hidden on small screens. Corrected to md:ml-auto. */}
+            <nav className="hidden md:flex items-center space-x-1 md:ml-auto">
               <button
                 onClick={() => { setActiveTab('upload'); }}
-                className={`px-4 py-3 sm:py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 w-full sm:w-auto flex items-center justify-center text-sm ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 flex items-center justify-center text-sm ${
                   activeTab === 'upload' 
                     ? 'bg-secondary text-ivory shadow-md'
                     : 'text-ivory/75 hover:bg-secondary hover:text-ivory'
@@ -148,7 +143,7 @@ function App() {
               </button>
               <button
                 onClick={() => { setActiveTab('dashboard'); }}
-                className={`px-4 py-3 sm:py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 w-full sm:w-auto flex items-center justify-center text-sm ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 flex items-center justify-center text-sm ${
                   activeTab === 'dashboard' 
                     ? 'bg-secondary text-ivory shadow-md'
                     : 'text-ivory/75 hover:bg-secondary hover:text-ivory'
@@ -159,7 +154,7 @@ function App() {
               </button>
               <button
                 onClick={() => { setActiveTab('models'); }}
-                className={`px-4 py-3 sm:py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 w-full sm:w-auto flex items-center justify-center text-sm ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 flex items-center justify-center text-sm ${
                   activeTab === 'models' 
                     ? 'bg-secondary text-ivory shadow-md'
                     : 'text-ivory/75 hover:bg-secondary hover:text-ivory'
@@ -173,7 +168,7 @@ function App() {
         </div>
       </header>
 
-      {/* Mobile Dropdown Panel - Refactored positioning, size, styling, and animation */}
+      {/* Mobile Dropdown Panel */}
       <div
         className={`md:hidden fixed top-20 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm z-[55]
                    bg-black/90 backdrop-blur-sm rounded-xl shadow-2xl p-5
@@ -182,18 +177,16 @@ function App() {
             ? 'opacity-100 transform translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 transform -translate-y-4 scale-95 pointer-events-none'
         }`}
-        // onClick={toggleMobileMenu} // Removed: panel itself shouldn't close on click, only backdrop (not used here) or X
       >
-        <div className="flex flex-col items-center space-y-4 relative"> {/* Content wrapper */}
+        <div className="flex flex-col items-center space-y-4 relative">
             <button
               onClick={toggleMobileMenu}
-              className="absolute top-0 right-0 p-1 rounded-md text-ivory/75 hover:text-ivory hover:bg-neutral-700/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary" // Adjusted position for smaller panel
+              className="absolute top-0 right-0 p-1 rounded-md text-ivory/75 hover:text-ivory hover:bg-neutral-700/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
               aria-label="Close mobile menu"
             >
-              <X size={24} /> {/* Adjusted size for smaller panel context */}
+              <X size={24} />
             </button>
 
-            {/* Navigation Buttons within Panel - Applying new styles */}
             <button
               onClick={() => { setActiveTab('upload'); setIsMobileMenuOpen(false); }}
               className="bg-primary text-black px-4 py-3 rounded-xl font-medium text-base w-full flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105 hover:bg-primary-dark shadow-md"
@@ -220,7 +213,7 @@ function App() {
         {activeTab !== 'landing' && (
           <AnimatedDotBackground className="absolute inset-0 -z-10" />
         )}
-        <div className="relative z-10 bg-transparent"> {/* Added bg-transparent. This div will contain the actual content, ensuring it's above the background */}
+        <div className="relative z-10 bg-transparent">
           {activeTab === 'upload' && (
             <div className="animate-slide-up">
               <UploadSection
