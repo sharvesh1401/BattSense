@@ -307,3 +307,12 @@ const ModelSettings: React.FC<ModelSettingsProps> = ({ selectedModel, onModelCha
                 <input type="checkbox" className="rounded transition-colors duration-200 text-secondary focus:ring-offset-black focus:ring-secondary" />
                 <span className="text-xs sm:text-sm transition-colors duration-200 text-ivory/75 group-hover:text-ivory">Feature importance</span>
               </label>
+            </div> {/* Closes div className="space-y-2 sm:space-y-3" for Output checkboxes */}
+          </div> {/* Closes div className="space-y-3 sm:space-y-4" for Output column */}
+        </div> {/* Closes div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" for Advanced Config sections */}
+      </div> {/* Closes div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 sm:p-6 lg:p-8 animate-slide-up" for Advanced Configuration Card */}
+    </div> /* Closes main component wrapper div className="space-y-6 sm:space-y-8 animate-fade-in px-4 sm:px-0 text-ivory" */
+  );
+};
+
+export default ModelSettings;
