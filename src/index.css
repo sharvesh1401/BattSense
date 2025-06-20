@@ -2,17 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  background-color: #FFFEEC; /* Ivory */
-  color: #1a1a1a; /* color-text */
-  min-height: 100%;
+/* Removed html, body styles - now handled in index.html for global bg black, text ivory */
+/* Ensure min-height is still applied if needed, or handled by App structure */
+html, body, #root {
+  min-height: 100vh; /* Ensure root and body take full height */
 }
 
-/* Custom focus styles */
+
+/* Custom focus styles - updated to use new theme colors (using Tailwind's theme function eventually if possible, or direct hex for now) */
 input:focus, textarea:focus, select:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #A88AED; /* indigo */
-  border-color: #A88AED;
+  /* Assuming 'secondary' is #A88AED. For direct use here, ensure this matches tailwind.config.js */
+  box-shadow: 0 0 0 2px #A88AED; /* secondary */
+  border-color: #A88AED; /* secondary */
   transition: all 0.2s ease-in-out;
 }
 
@@ -21,22 +23,22 @@ button, input, textarea, select {
   transition: all 0.2s ease-in-out;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - updated to new theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #FFFEEC;
+  background: #121212; /* neutral-900 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #A88AED;
+  background: #A88AED; /* secondary */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #CBD83B;
+  background: #CBD83B; /* primary */
 }
 
 /* Animation delays for staggered effects */
