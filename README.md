@@ -43,5 +43,5 @@ Other models can also be tested and compared in the future for improved accuracy
 - **Mean Squared Error (MSE)**
 - **Root Mean Squared Error (RMSE)**
 - **R² Score** (to be added)
-- **MAE** (Mean Absolute Error - recommended addition)
+- **MAE** (Mean Absolute Error )
 
