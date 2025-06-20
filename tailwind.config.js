@@ -17,12 +17,6 @@ export default {
         // Old 'pear', 'indigo', 'ivory' are effectively replaced by new names.
         // 'color-text' is removed as default text color will be ivory on black bg.
       },
-      animation: {
-        'fade-in': 'fadeIn 0.6s ease-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'scale-in': 'scaleIn 0.4s ease-out',
-        'count-up': 'countUp 1.5s ease-out',
-      },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
@@ -41,6 +35,17 @@ export default {
           '50%': { transform: 'scale(1.1)', opacity: '0.8' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        'texture-scroll': { // New keyframes for texture scroll
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '20px 20px' }, // Assuming a 20px tile
+        },
+      },
+      animation: { // Ensure 'animation' is correctly extended
+        'fade-in': 'fadeIn 0.6s ease-out',
+        'slide-up': 'slideUp 0.5s ease-out',
+        'scale-in': 'scaleIn 0.4s ease-out',
+        'count-up': 'countUp 1.5s ease-out',
+        'texture-scroll': 'texture-scroll 3s linear infinite', // New animation
       },
     },
   },

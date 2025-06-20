@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react'; // Added useEffect, useRef
 import { Battery, Zap, TrendingUp, BarChart3, Upload, ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
 
 interface LandingPageProps {
@@ -6,21 +6,68 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
+  const textureRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (textureRef.current && window.innerWidth >= 768) { // md breakpoint
+        const { clientX, clientY } = event;
+        const { innerWidth, innerHeight } = window;
+
+        // Calculate move relative to center of screen, parallaxFactor reduces the movement
+        const parallaxFactor = 20; // Max pixels to move
+        const moveX = (clientX / innerWidth - 0.5) * parallaxFactor;
+        const moveY = (clientY / innerHeight - 0.5) * parallaxFactor;
+
+        // Apply as backgroundPosition. Initial backgroundPosition is implicitly '0 0' or what's set by CSS.
+        // We adjust it slightly based on mouse.
+        // Adding 'px' unit is important for backgroundPosition.
+        textureRef.current.style.backgroundPositionX = `${-moveX}px`;
+        textureRef.current.style.backgroundPositionY = `${-moveY}px`;
+      }
+    };
+
+    // Only add mouse listener on desktop, mobile will use CSS animation
+    if (window.innerWidth >= 768) {
+      document.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      if (window.innerWidth >= 768) {
+        document.removeEventListener('mousemove', handleMouseMove);
+      }
+      // Reset background position on unmount or if switching to mobile view (though effect re-run handles this better)
+      if (textureRef.current) {
+        textureRef.current.style.backgroundPositionX = '0px';
+        textureRef.current.style.backgroundPositionY = '0px';
+      }
+    };
+  }, []); // Empty dependency array, effect runs once on mount & unmount
+
+  // SVG Data URI for a subtle dot pattern (20x20 tile with one dot)
+  const dotPatternUri = "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2.5' cy='2.5' r='0.5' fill='rgba(239,236,236,0.25)'/%3E%3C/svg%3E";
+  // rgba(239,236,236,0.25) is ivory at 25% opacity for the dot
+
   return (
-    // text-white changed to text-ivory for consistency
-    <div className="min-h-screen text-ivory animate-fade-in bg-black"> {/* Explicitly setting bg-black for landing page root */}
+    <div className="min-h-screen text-ivory animate-fade-in bg-black">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        {/* Background Pattern - inline style, can remain for now or be part of new theme design */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}></div>
-        </div>
+        {/* Removed old background pattern div */}
+        {/* New Texture Layer */}
+        <div
+          id="landing-texture-bg"
+          ref={textureRef}
+          className="absolute inset-0 z-0 opacity-30 animate-texture-scroll md:animate-none" // Removed non-standard transition-background-position
+          style={{
+            backgroundImage: `url("${dotPatternUri}")`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: '20px 20px', // Matches the animation
+          }}
+        ></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        {/* Hero Content - ensure it's above texture */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center animate-slide-up">
-            {/* Logo */}
             <div className="flex justify-center mb-8">
               <div className="p-4 backdrop-blur-sm rounded-2xl transition-transform duration-300 hover:scale-110">
                 <Battery className="h-16 w-16 animate-pulse text-primary" /> {/* Icon color: primary */}
