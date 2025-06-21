@@ -1,71 +1,23 @@
-import React, { useEffect, useRef } from 'react'; // Added useEffect, useRef
+import React from 'react';
 import { Battery, Zap, TrendingUp, BarChart3, Upload, ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
+import InteractiveBackground from './InteractiveBackground'; // Import the new background
 
 interface LandingPageProps {
   onGetStarted: () => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
-  const textureRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (textureRef.current && window.innerWidth >= 768) { // md breakpoint
-        const { clientX, clientY } = event;
-        const { innerWidth, innerHeight } = window;
-
-        // Calculate move relative to center of screen, parallaxFactor reduces the movement
-        const parallaxFactor = 20; // Max pixels to move
-        const moveX = (clientX / innerWidth - 0.5) * parallaxFactor;
-        const moveY = (clientY / innerHeight - 0.5) * parallaxFactor;
-
-        // Apply as backgroundPosition. Initial backgroundPosition is implicitly '0 0' or what's set by CSS.
-        // We adjust it slightly based on mouse.
-        // Adding 'px' unit is important for backgroundPosition.
-        textureRef.current.style.backgroundPositionX = `${-moveX}px`;
-        textureRef.current.style.backgroundPositionY = `${-moveY}px`;
-      }
-    };
-
-    // Only add mouse listener on desktop, mobile will use CSS animation
-    if (window.innerWidth >= 768) {
-      document.addEventListener('mousemove', handleMouseMove);
-    }
-
-    return () => {
-      if (window.innerWidth >= 768) {
-        document.removeEventListener('mousemove', handleMouseMove);
-      }
-      // Reset background position on unmount or if switching to mobile view (though effect re-run handles this better)
-      if (textureRef.current) {
-        textureRef.current.style.backgroundPositionX = '0px';
-        textureRef.current.style.backgroundPositionY = '0px';
-      }
-    };
-  }, []); // Empty dependency array, effect runs once on mount & unmount
-
-  // SVG Data URI for a subtle dot pattern (20x20 tile with one dot)
-  const dotPatternUri = "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2.5' cy='2.5' r='0.5' fill='rgba(239,236,236,0.25)'/%3E%3C/svg%3E";
-  // rgba(239,236,236,0.25) is ivory at 25% opacity for the dot
+  // Removed textureRef, useEffect for mouse move, and dotPatternUri
 
   return (
     <div className="min-h-screen text-ivory animate-fade-in bg-black">
+      <InteractiveBackground /> {/* Add the interactive background component here */}
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        {/* Removed old background pattern div */}
-        {/* New Texture Layer */}
-        <div
-          id="landing-texture-bg"
-          ref={textureRef}
-          className="absolute inset-0 z-0 opacity-30 animate-texture-scroll md:animate-none" // Removed non-standard transition-background-position
-          style={{
-            backgroundImage: `url("${dotPatternUri}")`,
-            backgroundRepeat: 'repeat',
-            backgroundSize: '20px 20px', // Matches the animation
-          }}
-        ></div>
+        {/* Removed old background pattern div (landing-texture-bg) */}
         
         {/* Hero Content - ensure it's above texture */}
+        {/* Ensure z-10 is sufficient or adjust if InteractiveBackground causes issues, though it has z-index: -10 */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center animate-slide-up">
             <div className="flex justify-center mb-8">
