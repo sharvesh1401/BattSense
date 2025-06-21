@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Battery, Upload, BarChart3, Settings, Menu, X } from 'lucide-react';
 import LandingPage from './components/LandingPage';
-import AnimatedDotBackground from './components/AnimatedDotBackground';
+import InteractiveBackground from './components/InteractiveBackground';
 import UploadSection from './components/UploadSection';
 import Dashboard from './components/Dashboard';
 import ModelSettings from './components/ModelSettings';
@@ -99,6 +99,9 @@ function App() {
 
   return (
     <div className="min-h-screen animate-fade-in">
+      {/* Interactive Background - Only show on non-landing pages */}
+      <InteractiveBackground />
+      
       {/* Header - Contains in-flow hamburger, abs-centered logo, and desktop nav */}
       <header
         className={`bg-neutral-900 backdrop-blur-sm sticky top-0 z-50 shadow-md transition-transform duration-300 ease-in-out ${
@@ -209,11 +212,8 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative bg-transparent">
-        {activeTab !== 'landing' && (
-          <AnimatedDotBackground className="absolute inset-0 -z-10" />
-        )}
-        <div className="relative z-10 bg-transparent">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+        <div className="relative z-10">
           {activeTab === 'upload' && (
             <div className="animate-slide-up">
               <UploadSection
