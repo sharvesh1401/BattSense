@@ -224,3 +224,5 @@ const InteractiveBackground: React.FC<InteractiveBackgroundProps> = ({ className
 };
 
 export default InteractiveBackground;
+  )
+}
