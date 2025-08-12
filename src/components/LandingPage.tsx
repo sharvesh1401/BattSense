@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'; // Added useEffect, useRef
-import { Battery, Zap, TrendingUp, BarChart3, Upload, ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
+import { Battery, Zap, TrendingUp, BarChart3, Upload, ArrowRight, CheckCircle, Sparkles, Github, ExternalLink } from 'lucide-react';
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -50,6 +50,29 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
 
   return (
     <div className="min-h-screen text-ivory animate-fade-in bg-black">
+      {/* Top Links Section */}
+      <div className="absolute top-6 right-6 z-20 flex items-center space-x-4">
+        <a
+          href="https://github.com/sharvesh1401"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center space-x-2 text-ivory/75 hover:text-ivory transition-colors duration-200 group"
+        >
+          <Github className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
+          <span className="text-sm font-medium">GitHub</span>
+        </a>
+        
+        <a
+          href="https://sharveshfolio.netlify.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center space-x-2 text-ivory/75 hover:text-ivory transition-colors duration-200 group"
+        >
+          <ExternalLink className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
+          <span className="text-sm font-medium">Portfolio</span>
+        </a>
+      </div>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Removed old background pattern div */}
@@ -92,6 +115,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
               Upload Battery Dataset
               <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
+            
+            {/* EV Tools Button */}
+            <div className="mt-6">
+              <a
+                href="https://eco-amp.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 bg-secondary text-ivory hover:bg-secondary-dark px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:scale-105 shadow-md"
+              >
+                <Zap className="h-5 w-5" />
+                <span>More EV Tools</span>
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -175,8 +212,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             <Battery className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold text-ivory">BattSense</span>
           </div>
-          <p className="text-ivory/80">
+          <p className="text-ivory/80 mb-4">
             Built with advanced machine learning for battery health prediction
+          </p>
+          <p className="text-sm text-ivory/75">
+            Made by{' '}
+            <a
+              href="https://sharveshfolio.netlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary hover:text-secondary-dark font-medium transition-colors duration-200 underline decoration-secondary/50 hover:decoration-secondary"
+            >
+              Sharvesh Selvakumar
+            </a>
           </p>
         </div>
       </footer>
