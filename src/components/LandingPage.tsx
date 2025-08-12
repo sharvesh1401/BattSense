@@ -226,6 +226,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
               Sharvesh Selvakumar
             </a>
           </p>
+          <p className="text-xs text-ivory/75 mt-2">
+            &copy; {new Date().getFullYear()} BattSense. All Rights Reserved.
+          </p>
         </div>
       </footer>
     </div>

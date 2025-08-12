@@ -49,9 +49,6 @@ const Footer: React.FC = () => {
           Disclaimer: This tool is for educational and demonstration purposes only.
           Predictions are based on simulated models and should not be used for critical decisions.
         </p>
-        <p className="text-xs text-ivory/75"> {/* Made copyright text slightly less emphasized */}
-          &copy; {new Date().getFullYear()} BattSense. All Rights Reserved.
-        </p>
       </div>
     </footer>
   );
