@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Battery, Upload, BarChart3, Settings, Menu, X } from 'lucide-react';
+import { Battery, Upload, BarChart3, Settings, Menu, X, ArrowLeft } from 'lucide-react';
 import LandingPage from './components/LandingPage';
 import AnimatedDotBackground from './components/AnimatedDotBackground';
 import UploadSection from './components/UploadSection';
@@ -213,6 +213,20 @@ function App() {
         {activeTab !== 'landing' && (
           <AnimatedDotBackground className="absolute inset-0 -z-10" />
         )}
+        
+        {/* Back to Landing Button - Only show when not on landing page */}
+        {activeTab !== 'landing' && (
+          <div className="mb-6 animate-fade-in">
+            <button
+              onClick={() => setActiveTab('landing')}
+              className="flex items-center space-x-2 text-ivory/75 hover:text-ivory transition-colors duration-200 group"
+            >
+              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200" />
+              <span className="text-sm">Back to Home</span>
+            </button>
+          </div>
+        )}
+        
         <div className="relative z-10 bg-transparent">
           {activeTab === 'upload' && (
             <div className="animate-slide-up">
